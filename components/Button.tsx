@@ -23,15 +23,15 @@ export default function Button({
   type = 'button',
 }: ButtonProps) {
   const baseStyles =
-    'inline-flex items-center justify-center px-6 py-3 rounded-md font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background focus:ring-primary';
+    'inline-flex items-center justify-center px-6 py-3 rounded-md font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background focus:ring-primary-accent';
   
   const variants = {
     primary:
-      'bg-primary text-background hover:bg-primary/90 focus:ring-primary',
+      'bg-primary-accent text-white hover:bg-primary-accent/90 focus:ring-primary-accent',
     secondary:
       'bg-background-secondary text-primary border border-primary/20 hover:border-primary/40 focus:ring-primary',
     outline:
-      'border-2 border-primary text-primary hover:bg-primary hover:text-background focus:ring-primary',
+      'border-2 border-primary-accent text-primary-accent hover:bg-primary-accent hover:text-white focus:ring-primary-accent',
   };
 
   const combinedClassName = `${baseStyles} ${variants[variant]} ${className}`;

@@ -9,16 +9,18 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#ffffff',
-          muted: '#a3a3a3',
+          DEFAULT: '#111827', // main text color (near-black)
+          muted: '#6b7280',
+          accent: '#dc2626', // brand red
         },
         background: {
-          DEFAULT: '#0a0a0a',
-          secondary: '#141414',
+          DEFAULT: '#ffffff',
+          secondary: '#f3f4f6',
         },
       },
     },
   },
   plugins: [],
 }
+
 

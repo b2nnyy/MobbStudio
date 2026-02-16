@@ -10,6 +10,9 @@ export const rates = {
 export const depositPercent = 50;
 export const minHours = 2;
 
+// Minimum hours in advance required to book a session
+export const bookingAdvanceHours = 2;
+
 // Placeholder map embed URL - to be replaced with actual location
 export const mapEmbedUrl = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.184133389029!2d-73.98811768459418!3d40.75889597932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes%20Square!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus';
 
@@ -39,4 +42,20 @@ export const services = {
     ],
   },
 };
+
+export const engineers = [
+  {
+    id: 'any',
+    name: 'Any available engineer',
+  },
+  {
+    id: 'house-1',
+    name: 'House engineer 1',
+  },
+  {
+    id: 'house-2',
+    name: 'House engineer 2',
+  },
+];
+
 

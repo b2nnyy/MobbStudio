@@ -99,3 +99,4 @@ The following items still need to be provided:
 - The map embed URL is currently a placeholder. Replace it in `lib/constants.ts` when the exact location is available.
 - Email and phone fields are marked as "Coming soon" until contact information is available.
 
+

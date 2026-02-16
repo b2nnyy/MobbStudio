@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Button from './Button';
-import { studioName, instagramUrl } from '@/lib/constants';
+import { studioName } from '@/lib/constants';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -13,6 +13,7 @@ const navLinks = [
   { href: '/gear', label: 'Gear' },
   { href: '/location', label: 'Location' },
   { href: '/contact', label: 'Contact' },
+  { href: '/booking', label: 'Booking' },
 ];
 
 export default function Header() {
@@ -47,13 +48,12 @@ export default function Header() {
           </div>
 
           <Button
-            href={instagramUrl}
-            external
+            href="/booking"
             variant="primary"
             className="text-sm"
-            aria-label="Book on Instagram"
+            aria-label="Book now"
           >
-            Book on Instagram
+            BOOK NOW
           </Button>
         </div>
 
@@ -79,4 +79,5 @@ export default function Header() {
     </header>
   );
 }
+
 

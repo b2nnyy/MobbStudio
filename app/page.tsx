@@ -49,12 +49,11 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
-              href={instagramUrl}
-              external
+              href="/booking"
               variant="primary"
-              aria-label="Book via Instagram DM"
+              aria-label="Book now"
             >
-              Book via Instagram DM
+              BOOK NOW
             </Button>
             <Button href="/rates" variant="outline" aria-label="View rates">
               View rates
@@ -206,4 +205,5 @@ export default function Home() {
     </>
   );
 }
+
 
