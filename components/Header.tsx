@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import Button from './Button';
 import { studioName } from '@/lib/constants';
@@ -25,10 +26,20 @@ export default function Header() {
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link
             href="/"
-            className="text-xl md:text-2xl font-bold text-primary hover:text-primary/80 transition-colors"
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity"
             aria-label="Home"
           >
-            {studioName}
+            <Image
+              src="/GIF-2-Mobb.gif"
+              alt={`${studioName} Logo`}
+              width={60}
+              height={60}
+              className="h-10 w-10 md:h-12 md:w-12 object-contain"
+              unoptimized
+            />
+            <span className="text-xl md:text-2xl font-bold text-primary">
+              {studioName}
+            </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
