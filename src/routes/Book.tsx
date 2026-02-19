@@ -52,8 +52,7 @@ export function Book() {
   const [loadingBusy, setLoadingBusy] = useState(false)
   const [busyError, setBusyError] = useState<string | null>(null)
 
-  const [startHour, setStartHour] = useState<number | null>(null)
-  const [hours, setHours] = useState<number>(minHours)
+  const [selectedHours, setSelectedHours] = useState<number[]>([])
 
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
@@ -70,7 +69,7 @@ export function Book() {
     setLoadingBusy(true)
     setBusyError(null)
     setBusyHours(null)
-    setStartHour(null)
+    setSelectedHours([])
     ;(async () => {
       try {
         const data = await fetchBusyHours(date)
@@ -94,20 +93,14 @@ export function Book() {
     return new Date(now.getTime() + minAdvanceHours * 60 * 60 * 1000)
   }, [])
 
-  const hoursOptions = useMemo(() => {
-    const opts: number[] = []
-    for (let h = minHours; h <= 12; h++) opts.push(h)
-    return opts
-  }, [])
-
   function hourLabel(h: number) {
     const d = new Date()
     d.setHours(h, 0, 0, 0)
     return d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })
   }
 
-  function rangeLabel(start: number, lenHours: number) {
-    return `${hourLabel(start)} - ${hourLabel(start + lenHours)}`
+  function rangeLabel(start: number, durationHours: number) {
+    return `${hourLabel(start)} - ${hourLabel(start + durationHours)}`
   }
 
   function isHourBlockedByAdvanceRule(targetDate: string, h: number) {
@@ -117,22 +110,47 @@ export function Book() {
     return slot < minStart
   }
 
-  function isRangeFree(s: number, lenHours: number) {
-    for (let h = s; h < s + lenHours; h++) {
-      if (h < 0 || h > 23) return false
-      if (busySet.has(h)) return false
-      if (isHourBlockedByAdvanceRule(date, h)) return false
+  function isHourAvailable(h: number) {
+    if (h < 0 || h > 23) return false
+    if (loadingBusy || busyHours == null) return false
+    if (busySet.has(h)) return false
+    if (isHourBlockedByAdvanceRule(date, h)) return false
+    return true
+  }
+
+  function isConsecutive(hoursToCheck: number[]) {
+    if (hoursToCheck.length < 2) return true
+    for (let i = 1; i < hoursToCheck.length; i++) {
+      if (hoursToCheck[i] - hoursToCheck[i - 1] !== 1) return false
     }
     return true
   }
+
+  function toggleHour(h: number) {
+    if (!isHourAvailable(h)) return
+    setSelectedHours((prev) => {
+      const isSelected = prev.includes(h)
+      const next = isSelected ? prev.filter((hour) => hour !== h) : [...prev, h]
+      const sortedNext = [...next].sort((a, b) => a - b)
+      if (sortedNext.length > 12) return prev
+      if (!isConsecutive(sortedNext)) return prev
+      return sortedNext
+    })
+  }
+
+  const selectedStartHour = selectedHours.length > 0 ? selectedHours[0] : null
+  const selectedDurationHours = selectedHours.length
+  const selectedRange =
+    selectedStartHour == null ? null : rangeLabel(selectedStartHour, selectedDurationHours)
 
   const canSubmit =
     name.trim().length > 0 &&
     phone.trim().length > 0 &&
     ig.trim().length > 0 &&
-    startHour != null &&
-    hours >= minHours &&
-    isRangeFree(startHour ?? 0, hours) &&
+    selectedStartHour != null &&
+    selectedDurationHours >= minHours &&
+    selectedDurationHours <= 12 &&
+    selectedHours.every((h) => isHourAvailable(h)) &&
     !submitting
 
   const successfulSessionTotal = bookedHours == null ? 0 : bookedHours * rates.withEngineerHourly
@@ -141,13 +159,19 @@ export function Book() {
   const successfulDepositDisplay = successfulDepositAmount.toFixed(2)
   const successfulSessionTotalDisplay = successfulSessionTotal.toFixed(2)
   const cashAppDepositUrl = useMemo(() => {
+    // Cash App mobile clients reliably prefill amount when it's in the path: /$cashtag/<amount>
+    const match = cashAppUrl.match(/cash\.app\/(\$[^/?#]+)/i)
+    if (match?.[1]) {
+      return `https://cash.app/${match[1]}/${successfulDepositDisplay}`
+    }
+    // Fallback for unexpected URL formats.
     const url = new URL(cashAppUrl)
     url.searchParams.set('amount', successfulDepositDisplay)
     return url.toString()
   }, [successfulDepositDisplay])
 
   async function onSubmit() {
-    if (!canSubmit || startHour == null) return
+    if (!canSubmit || selectedStartHour == null) return
     setSubmitting(true)
     setSubmitMsg(null)
     setBookingSucceeded(false)
@@ -158,17 +182,17 @@ export function Book() {
         phone: phone.trim(),
         instagram: ig.trim(),
         date,
-        startHour,
-        durationMinutes: hours * 60,
+        startHour: selectedStartHour,
+        durationMinutes: selectedDurationHours * 60,
         notes: notes.trim() || undefined,
       })
       setSubmitMsg('Request received — check your email/DMs for confirmation (if applicable).')
       setBookingSucceeded(true)
-      setBookedHours(hours)
+      setBookedHours(selectedDurationHours)
       // Refresh availability after booking
       const data = await fetchBusyHours(date)
       setBusyHours(data)
-      setStartHour(null)
+      setSelectedHours([])
     } catch (e) {
       setSubmitMsg(e instanceof Error ? e.message : 'Booking failed')
       setBookingSucceeded(false)
@@ -280,30 +304,8 @@ export function Book() {
                 <p className="text-sm font-semibold text-white">Time slots</p>
                 <p className="mt-1 text-xs text-zinc-400">{date}</p>
                 <p className="mt-1 text-xs text-zinc-500">
-                  Pick a start time and we book the full {hours}-hour block.
+                  Select at least {minHours} consecutive hourly slots (max 12).
                 </p>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <label className="text-xs text-zinc-400" htmlFor="bkHours">
-                  Hours
-                </label>
-                <select
-                  id="bkHours"
-                  className="rounded-lg border border-white/10 bg-zinc-950/60 px-3 py-2 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
-                  value={hours}
-                  onChange={(e) => {
-                    const next = Number(e.target.value)
-                    setHours(next)
-                    if (startHour != null && !isRangeFree(startHour, next)) setStartHour(null)
-                  }}
-                >
-                  {hoursOptions.map((h) => (
-                    <option key={h} value={h}>
-                      {h} hours
-                    </option>
-                  ))}
-                </select>
               </div>
             </div>
 
@@ -315,17 +317,14 @@ export function Book() {
 
             <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
               {Array.from({ length: 24 }).map((_, h) => {
-                const blocked =
-                  loadingBusy ||
-                  busyHours == null ||
-                  !isRangeFree(h, hours)
-                const selected = startHour === h
+                const blocked = !isHourAvailable(h)
+                const selected = selectedHours.includes(h)
                 return (
                   <button
                     key={h}
                     type="button"
                     disabled={blocked}
-                    onClick={() => setStartHour(h)}
+                    onClick={() => toggleHour(h)}
                     className={[
                       'rounded-xl border px-3 py-3 text-left text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950',
                       blocked
@@ -334,11 +333,11 @@ export function Book() {
                       selected ? 'border-white/30 bg-white/10' : '',
                     ].join(' ')}
                     aria-pressed={selected}
-                    aria-label={rangeLabel(h, hours)}
+                    aria-label={hourLabel(h)}
                   >
-                    <div className="font-semibold">{rangeLabel(h, hours)}</div>
+                    <div className="font-semibold">{hourLabel(h)}</div>
                     <div className="mt-1 text-xs text-zinc-400">
-                      {blocked ? 'Unavailable' : `${hours}-hour slot`}
+                      {blocked ? 'Unavailable' : selected ? 'Selected' : 'Available'}
                     </div>
                   </button>
                 )
@@ -408,9 +407,9 @@ export function Book() {
                 {submitting ? 'Sending…' : 'Request booking'}
               </Button>
               <p className="text-sm text-zinc-400">
-                {startHour == null
-                  ? 'Select an available start time.'
-                  : `Selected: ${rangeLabel(startHour, hours)} (${hours} hour${hours === 1 ? '' : 's'}).`}
+                {selectedStartHour == null
+                  ? `Select at least ${minHours} consecutive hourly slots.`
+                  : `Selected: ${selectedRange} (${selectedDurationHours} hour${selectedDurationHours === 1 ? '' : 's'}).`}
               </p>
             </div>
 
