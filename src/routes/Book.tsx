@@ -1,5 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
-import { instagramHandle, instagramUrl, minAdvanceHours, minHours } from '../lib/constants'
+import {
+  cashAppUrl,
+  depositPercent,
+  instagramHandle,
+  instagramUrl,
+  minAdvanceHours,
+  minHours,
+  rates,
+} from '../lib/constants'
 import { bookSession, fetchBusyHours } from '../lib/bookingApi'
 import { ButtonExternalLink, ButtonLink, Button } from '../components/Button'
 import { Card, CardBody } from '../components/Card'
@@ -54,6 +62,8 @@ export function Book() {
 
   const [submitting, setSubmitting] = useState(false)
   const [submitMsg, setSubmitMsg] = useState<string | null>(null)
+  const [bookingSucceeded, setBookingSucceeded] = useState(false)
+  const [bookedHours, setBookedHours] = useState<number | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -96,6 +106,10 @@ export function Book() {
     return d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })
   }
 
+  function rangeLabel(start: number, lenHours: number) {
+    return `${hourLabel(start)} - ${hourLabel(start + lenHours)}`
+  }
+
   function isHourBlockedByAdvanceRule(targetDate: string, h: number) {
     // Compare using local Date (assumes Apps Script timezone matches intended booking timezone)
     const [y, m, day] = targetDate.split('-').map(Number)
@@ -121,10 +135,23 @@ export function Book() {
     isRangeFree(startHour ?? 0, hours) &&
     !submitting
 
+  const successfulSessionTotal = bookedHours == null ? 0 : bookedHours * rates.withEngineerHourly
+  const successfulDepositAmount =
+    successfulSessionTotal * (depositPercent / 100)
+  const successfulDepositDisplay = successfulDepositAmount.toFixed(2)
+  const successfulSessionTotalDisplay = successfulSessionTotal.toFixed(2)
+  const cashAppDepositUrl = useMemo(() => {
+    const url = new URL(cashAppUrl)
+    url.searchParams.set('amount', successfulDepositDisplay)
+    return url.toString()
+  }, [successfulDepositDisplay])
+
   async function onSubmit() {
     if (!canSubmit || startHour == null) return
     setSubmitting(true)
     setSubmitMsg(null)
+    setBookingSucceeded(false)
+    setBookedHours(null)
     try {
       await bookSession({
         name: name.trim(),
@@ -136,12 +163,16 @@ export function Book() {
         notes: notes.trim() || undefined,
       })
       setSubmitMsg('Request received — check your email/DMs for confirmation (if applicable).')
+      setBookingSucceeded(true)
+      setBookedHours(hours)
       // Refresh availability after booking
       const data = await fetchBusyHours(date)
       setBusyHours(data)
       setStartHour(null)
     } catch (e) {
       setSubmitMsg(e instanceof Error ? e.message : 'Booking failed')
+      setBookingSucceeded(false)
+      setBookedHours(null)
     } finally {
       setSubmitting(false)
     }
@@ -248,6 +279,9 @@ export function Book() {
               <div>
                 <p className="text-sm font-semibold text-white">Time slots</p>
                 <p className="mt-1 text-xs text-zinc-400">{date}</p>
+                <p className="mt-1 text-xs text-zinc-500">
+                  Pick a start time and we book the full {hours}-hour block.
+                </p>
               </div>
 
               <div className="flex items-center gap-3">
@@ -300,10 +334,11 @@ export function Book() {
                       selected ? 'border-white/30 bg-white/10' : '',
                     ].join(' ')}
                     aria-pressed={selected}
+                    aria-label={rangeLabel(h, hours)}
                   >
-                    <div className="font-semibold">{hourLabel(h)}</div>
+                    <div className="font-semibold">{rangeLabel(h, hours)}</div>
                     <div className="mt-1 text-xs text-zinc-400">
-                      {blocked ? 'Unavailable' : 'Available'}
+                      {blocked ? 'Unavailable' : `${hours}-hour slot`}
                     </div>
                   </button>
                 )
@@ -375,7 +410,7 @@ export function Book() {
               <p className="text-sm text-zinc-400">
                 {startHour == null
                   ? 'Select an available start time.'
-                  : `Selected: ${hourLabel(startHour)} for ${hours} hour(s).`}
+                  : `Selected: ${rangeLabel(startHour, hours)} (${hours} hour${hours === 1 ? '' : 's'}).`}
               </p>
             </div>
 
@@ -383,6 +418,22 @@ export function Book() {
               <p className="mt-3 text-sm text-zinc-300" role="status" aria-live="polite">
                 {submitMsg}
               </p>
+            ) : null}
+
+            {bookingSucceeded ? (
+              <div className="mt-4 rounded-xl border border-white/10 bg-white/5 p-4">
+                <p className="text-sm text-zinc-200">
+                  Deposit is {depositPercent}% of your session total (with engineer rate).
+                </p>
+                <p className="mt-1 text-sm text-zinc-300">
+                  Session total: ${successfulSessionTotalDisplay} · Deposit due: ${successfulDepositDisplay}
+                </p>
+                <div className="mt-3">
+                  <ButtonExternalLink href={cashAppDepositUrl}>
+                    Pay ${successfulDepositDisplay} deposit
+                  </ButtonExternalLink>
+                </div>
+              </div>
             ) : null}
           </CardBody>
         </Card>

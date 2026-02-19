@@ -5,7 +5,6 @@ export const instagramUrl = 'https://instagram.com/mobbstudios'
 
 export const rates = {
   withEngineerHourly: 50,
-  withoutEngineerHourly: 30,
 } as const
 
 export const depositPercent = 50
@@ -25,6 +24,8 @@ export const minAdvanceHours = 2
 // This is the Web App "exec" URL from Apps Script deployment.
 export const bookingApiUrl =
   'https://script.google.com/macros/s/AKfycbzBv_QprRT0NpTeAerKmmElolarlDI2vkUEn608hYmGdilo8SBTPW2wY3TELHcJkuC2Ww/exec'
+
+export const cashAppUrl = 'https://cash.app/$Mobbstudios'
 
 // Placeholder embed (neutral coordinates). Replace with the studio’s real embed URL later.
 export const mapEmbedUrl =

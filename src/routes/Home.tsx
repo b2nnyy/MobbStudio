@@ -24,7 +24,7 @@ export function Home() {
               {studioName}
             </h1>
             <p className="mt-4 text-lg leading-relaxed text-zinc-300">
-              Tracking, mixing, mastering in a chill focused space.
+              Tracking, mixing, mastering.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -104,18 +104,13 @@ export function Home() {
                 Minimum {minHours} hours. {depositPercent}% deposit required to lock in.
               </p>
 
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <div className="mt-6 grid gap-3">
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                  <p className="text-sm text-zinc-400">With engineer</p>
+                  <p className="text-sm text-zinc-400">Studio session (engineer included)</p>
                   <p className="mt-2 text-2xl font-semibold text-white">
                     ${rates.withEngineerHourly}/hr
                   </p>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                  <p className="text-sm text-zinc-400">Without engineer</p>
-                  <p className="mt-2 text-2xl font-semibold text-white">
-                    ${rates.withoutEngineerHourly}/hr
-                  </p>
+                  <p className="mt-2 text-sm text-zinc-300">All sessions are booked with an engineer.</p>
                 </div>
               </div>
             </div>
@@ -208,8 +203,8 @@ export function Home() {
                   answer: `Minimum booking is ${minHours} hours.`,
                 },
                 {
-                  question: 'Can I book without an engineer?',
-                  answer: `Yes—$${rates.withoutEngineerHourly}/hr without an engineer.`,
+                  question: 'Are sessions booked with an engineer?',
+                  answer: 'Yes—all sessions are currently booked with an engineer included.',
                 },
                 {
                   question: 'Remote mixing and mastering?',

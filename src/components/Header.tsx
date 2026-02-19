@@ -35,13 +35,19 @@ export function Header() {
       </a>
 
       <div className="container-pad">
-        <div className="flex h-16 items-center justify-between gap-4">
+        <div className="flex h-24 items-center justify-between gap-4 sm:h-28">
           <Link
             to="/"
-            className="rounded-md text-sm font-semibold tracking-tight text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
+            className="rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
             aria-label={`${studioName} home`}
           >
-            {studioName}
+            <span className="block h-16 w-32 overflow-hidden sm:h-20 sm:w-40">
+              <img
+                src="/logo.gif"
+                alt={studioName}
+                className="h-full w-full scale-125 object-cover object-center"
+              />
+            </span>
           </Link>
 
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
