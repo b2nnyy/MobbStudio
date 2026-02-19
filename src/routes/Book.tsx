@@ -317,8 +317,21 @@ export function Book() {
 
             <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
               {Array.from({ length: 24 }).map((_, h) => {
-                const blocked = !isHourAvailable(h)
+                const isBusy = busySet.has(h)
+                const isTooSoon = isHourBlockedByAdvanceRule(date, h)
+                const blocked = loadingBusy || busyHours == null || isBusy || isTooSoon
                 const selected = selectedHours.includes(h)
+                const statusLabel = blocked
+                  ? loadingBusy || busyHours == null
+                    ? 'Loading…'
+                    : isBusy
+                      ? 'Booked'
+                      : isTooSoon
+                        ? 'Too soon'
+                        : 'Unavailable'
+                  : selected
+                    ? 'Selected'
+                    : 'Available'
                 return (
                   <button
                     key={h}
@@ -339,7 +352,7 @@ export function Book() {
                   >
                     <div className="font-semibold">{hourLabel(h)}</div>
                     <div className={['mt-1 text-xs', selected ? 'text-emerald-100/90' : 'text-zinc-400'].join(' ')}>
-                      {blocked ? 'Unavailable' : selected ? 'Selected' : 'Available'}
+                      {statusLabel}
                     </div>
                   </button>
                 )
