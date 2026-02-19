@@ -1,5 +1,12 @@
 import { Link } from 'react-router-dom'
-import { instagramHandle, instagramUrl, studioName } from '../lib/constants'
+import {
+  contactEmail,
+  contactPhoneDisplay,
+  contactPhoneTel,
+  instagramHandle,
+  instagramUrl,
+  studioName,
+} from '../lib/constants'
 
 const nav = [
   { label: 'Home', to: '/' },
@@ -22,18 +29,36 @@ export function Footer() {
           <div>
             <p className="text-sm font-semibold text-white">{studioName}</p>
             <p className="mt-2 text-sm text-zinc-400">
-              Book sessions using the booking calendar. Questions on Instagram.
+              Book sessions using the booking calendar. Questions? Email, call, or DM us.
             </p>
-            <p className="mt-4 text-sm">
-              <a
-                className="text-zinc-200 underline decoration-white/30 hover:text-white hover:decoration-white"
-                href={instagramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {instagramHandle}
-              </a>
-            </p>
+            <div className="mt-4 space-y-2 text-sm">
+              <p>
+                <a
+                  className="text-zinc-200 underline decoration-white/30 hover:text-white hover:decoration-white"
+                  href={`mailto:${contactEmail}`}
+                >
+                  {contactEmail}
+                </a>
+              </p>
+              <p>
+                <a
+                  className="text-zinc-200 underline decoration-white/30 hover:text-white hover:decoration-white"
+                  href={`tel:${contactPhoneTel}`}
+                >
+                  {contactPhoneDisplay}
+                </a>
+              </p>
+              <p>
+                <a
+                  className="text-zinc-200 underline decoration-white/30 hover:text-white hover:decoration-white"
+                  href={instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {instagramHandle}
+                </a>
+              </p>
+            </div>
           </div>
 
           <nav aria-label="Footer">

@@ -3,6 +3,12 @@ export const studioName = 'Mobb Studios'
 export const instagramHandle = '@mobbstudios'
 export const instagramUrl = 'https://instagram.com/mobbstudios'
 
+export const contactEmail = 'studios.mobb@gmail.com'
+
+// Display format for UI + an E.164-ish value for tel: links.
+export const contactPhoneDisplay = '(470) 534-7681'
+export const contactPhoneTel = '+14705347681'
+
 export const rates = {
   withEngineerHourly: 50,
 } as const
