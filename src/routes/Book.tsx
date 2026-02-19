@@ -331,14 +331,14 @@ export function Book() {
                         ? 'cursor-not-allowed border-white/10 bg-white/5 text-zinc-600'
                         : 'border-white/10 bg-white/5 text-white hover:bg-white/10',
                       selected
-                        ? 'border-emerald-400/60 bg-emerald-400/10 ring-2 ring-emerald-300 focus-visible:ring-emerald-200'
+                        ? 'border-emerald-300 bg-emerald-500/25 text-emerald-50 ring-2 ring-emerald-200 shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_0_24px_rgba(16,185,129,0.18)] focus-visible:ring-emerald-100'
                         : 'focus-visible:ring-zinc-200',
                     ].join(' ')}
                     aria-pressed={selected}
                     aria-label={hourLabel(h)}
                   >
                     <div className="font-semibold">{hourLabel(h)}</div>
-                    <div className="mt-1 text-xs text-zinc-400">
+                    <div className={['mt-1 text-xs', selected ? 'text-emerald-100/90' : 'text-zinc-400'].join(' ')}>
                       {blocked ? 'Unavailable' : selected ? 'Selected' : 'Available'}
                     </div>
                   </button>
