@@ -1,6 +1,6 @@
 import { useId, useState } from 'react'
 import { instagramHandle, instagramUrl } from '../lib/constants'
-import { ButtonExternalLink } from '../components/Button'
+import { ButtonExternalLink, ButtonLink } from '../components/Button'
 import { Card, CardBody } from '../components/Card'
 import { SectionHeader } from '../components/Section'
 
@@ -13,12 +13,17 @@ export function Contact() {
     <div className="container-pad py-14 sm:py-16">
       <SectionHeader
         eyebrow="Contact"
-        title="Book through Instagram"
-        description="Primary booking method: Instagram DMs only."
+        title="Questions or special requests?"
+        description="Book sessions from the booking calendar. DM us on Instagram if you have questions."
       />
 
       <div className="mt-6">
-        <ButtonExternalLink href={instagramUrl}>DM {instagramHandle}</ButtonExternalLink>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <ButtonLink to="/book">Book a session</ButtonLink>
+          <ButtonExternalLink href={instagramUrl} variant="secondary">
+            DM {instagramHandle}
+          </ButtonExternalLink>
+        </div>
       </div>
 
       <section className="mt-10 grid gap-4 lg:grid-cols-2">
@@ -46,7 +51,7 @@ export function Contact() {
               Quick message (coming soon)
             </h2>
             <p className="mt-2 text-sm text-zinc-300">
-              This form does not send yet. Please DM us on Instagram to book.
+              This form does not send yet. To book, use the booking calendar. For questions, DM us on Instagram.
             </p>
 
             <form
@@ -100,7 +105,7 @@ export function Contact() {
 
               {submitted ? (
                 <p className="text-sm text-zinc-300">
-                  Please DM us on Instagram to book (form sending is coming soon).
+                  To book, use the booking calendar. For questions, DM us on Instagram (form sending is coming soon).
                 </p>
               ) : null}
             </form>

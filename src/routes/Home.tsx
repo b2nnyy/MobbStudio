@@ -28,13 +28,13 @@ export function Home() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <ButtonExternalLink
-                href={instagramUrl}
-                aria-label={`Book via Instagram DM (${instagramHandle})`}
-              >
-                Book via Instagram DM
+              <ButtonLink to="/book">Book a session</ButtonLink>
+              <ButtonExternalLink href={instagramUrl} variant="secondary">
+                DM {instagramHandle}
               </ButtonExternalLink>
-              <ButtonLink to="/rates">View rates</ButtonLink>
+              <ButtonLink to="/rates" variant="secondary">
+                View rates
+              </ButtonLink>
             </div>
 
             <p className="mt-4 text-sm text-zinc-400">
@@ -52,7 +52,7 @@ export function Home() {
                 Services
               </h2>
               <p className="mt-2 text-sm text-zinc-400">
-                Clear, simple options—handled through Instagram DMs.
+                Clear, simple options—book right from the calendar.
               </p>
             </div>
             <Link className="text-sm text-zinc-300 hover:text-white" to="/services">
@@ -126,12 +126,15 @@ export function Home() {
                   Ready to book?
                 </h3>
                 <p className="mt-2 text-sm text-zinc-300">
-                  Send a DM and we’ll confirm availability.
+                  Pick a time in the booking calendar. DM us if you have questions.
                 </p>
                 <div className="mt-5 flex flex-col gap-3">
-                  <ButtonLink to="/rates">Go to rates</ButtonLink>
-                  <ButtonExternalLink href={instagramUrl}>
-                    DM {instagramHandle}
+                  <ButtonLink to="/book">Open booking calendar</ButtonLink>
+                  <ButtonLink to="/rates" variant="secondary">
+                    Go to rates
+                  </ButtonLink>
+                  <ButtonExternalLink href={instagramUrl} variant="secondary">
+                    Questions? DM {instagramHandle}
                   </ButtonExternalLink>
                 </div>
               </div>
@@ -150,13 +153,13 @@ export function Home() {
               <li className="rounded-2xl border border-white/10 bg-white/5 p-5">
                 <p className="font-medium text-white">Step 1</p>
                 <p className="mt-1">
-                  DM us with date, start time, and service.
+                  Open the booking calendar and choose a date + start time.
                 </p>
               </li>
               <li className="rounded-2xl border border-white/10 bg-white/5 p-5">
                 <p className="font-medium text-white">Step 2</p>
                 <p className="mt-1">
-                  We confirm availability and send deposit info.
+                  Submit your details. We’ll follow up with deposit info if needed.
                 </p>
               </li>
               <li className="rounded-2xl border border-white/10 bg-white/5 p-5">
@@ -166,7 +169,12 @@ export function Home() {
             </ol>
 
             <div className="mt-8">
-              <ButtonExternalLink href={instagramUrl}>Book on Instagram</ButtonExternalLink>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <ButtonLink to="/book">Book a session</ButtonLink>
+                <ButtonExternalLink href={instagramUrl} variant="secondary">
+                  Questions? DM {instagramHandle}
+                </ButtonExternalLink>
+              </div>
             </div>
           </div>
         </div>
@@ -180,7 +188,7 @@ export function Home() {
                 FAQ
               </h2>
               <p className="mt-2 text-sm text-zinc-400">
-                Quick answers—DM us if you want specifics.
+                Quick answers—DM us if you have questions.
               </p>
             </div>
             <Link className="text-sm text-zinc-300 hover:text-white" to="/policies">

@@ -37,12 +37,17 @@ export function Services() {
       <SectionHeader
         eyebrow="Services"
         title={`What we do at ${studioName}`}
-        description="Tracking, mixing, and mastering—kept simple. To book, DM us on Instagram."
+        description="Tracking, mixing, and mastering—kept simple. Book from the calendar, and DM us on Instagram if you have questions."
       />
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-        <ButtonExternalLink href={instagramUrl}>DM {instagramHandle}</ButtonExternalLink>
-        <ButtonLink to="/rates">View rates</ButtonLink>
+        <ButtonLink to="/book">Book a session</ButtonLink>
+        <ButtonLink to="/rates" variant="secondary">
+          View rates
+        </ButtonLink>
+        <ButtonExternalLink href={instagramUrl} variant="secondary">
+          Questions? DM {instagramHandle}
+        </ButtonExternalLink>
         <Link className="self-center text-sm text-zinc-300 hover:text-white" to="/contact">
           Contact →
         </Link>

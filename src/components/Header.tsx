@@ -1,10 +1,11 @@
 import { useId, useState } from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import { instagramHandle, instagramUrl, studioName } from '../lib/constants'
-import { ButtonExternalLink } from './Button'
+import { ButtonExternalLink, ButtonLink } from './Button'
 
 const nav = [
   { label: 'Home', to: '/' },
+  { label: 'Book', to: '/book' },
   { label: 'Services', to: '/services' },
   { label: 'Rates', to: '/rates' },
   { label: 'Policies', to: '/policies' },
@@ -52,11 +53,13 @@ export function Header() {
           </nav>
 
           <div className="hidden items-center gap-3 lg:flex">
+            <ButtonLink to="/book">Book a session</ButtonLink>
             <ButtonExternalLink
               href={instagramUrl}
-              aria-label={`Book on Instagram (${instagramHandle})`}
+              variant="secondary"
+              aria-label={`DM on Instagram (${instagramHandle})`}
             >
-              Book on Instagram
+              DM on Instagram
             </ButtonExternalLink>
           </div>
 
@@ -99,14 +102,20 @@ export function Header() {
             </div>
 
             <div className="mt-4">
-              <ButtonExternalLink
-                className="w-full"
-                href={instagramUrl}
-                aria-label={`Book on Instagram (${instagramHandle})`}
-                onClick={() => setOpen(false)}
-              >
-                Book on Instagram
-              </ButtonExternalLink>
+              <div className="grid gap-2">
+                <ButtonLink className="w-full" to="/book" onClick={() => setOpen(false)}>
+                  Book a session
+                </ButtonLink>
+                <ButtonExternalLink
+                  className="w-full"
+                  href={instagramUrl}
+                  variant="secondary"
+                  aria-label={`DM on Instagram (${instagramHandle})`}
+                  onClick={() => setOpen(false)}
+                >
+                  DM on Instagram
+                </ButtonExternalLink>
+              </div>
             </div>
           </nav>
         </div>

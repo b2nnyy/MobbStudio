@@ -14,7 +14,7 @@ export function Rates() {
       <SectionHeader
         eyebrow="Rates"
         title="Studio rates"
-        description={`Transparent pricing at ${studioName}. Bookings are handled through Instagram DMs.`}
+        description={`Transparent pricing at ${studioName}. Book from the calendar, and DM us if you have questions.`}
       />
 
       <div className="mt-10">
@@ -29,14 +29,15 @@ export function Rates() {
 
       <section className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-8">
         <h2 className="text-xl font-semibold tracking-tight text-white">
-          Book via Instagram
+          Book a session
         </h2>
         <p className="mt-2 text-sm text-zinc-300">
-          DM us your date, start time, service, and how many hours you want.
+          Use the booking calendar to pick a time. If you have special requests, DM us.
         </p>
         <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-          <ButtonExternalLink href={instagramUrl}>
-            DM {instagramHandle}
+          <ButtonLink to="/book">Open booking calendar</ButtonLink>
+          <ButtonExternalLink href={instagramUrl} variant="secondary">
+            Questions? DM {instagramHandle}
           </ButtonExternalLink>
           <ButtonLink to="/services">See services</ButtonLink>
           <Link className="self-center text-sm text-zinc-300 hover:text-white" to="/policies">

@@ -3,6 +3,7 @@ import { instagramHandle, instagramUrl, studioName } from '../lib/constants'
 
 const nav = [
   { label: 'Home', to: '/' },
+  { label: 'Book', to: '/book' },
   { label: 'Services', to: '/services' },
   { label: 'Rates', to: '/rates' },
   { label: 'Policies', to: '/policies' },
@@ -21,7 +22,7 @@ export function Footer() {
           <div>
             <p className="text-sm font-semibold text-white">{studioName}</p>
             <p className="mt-2 text-sm text-zinc-400">
-              Bookings handled through Instagram DMs.
+              Book sessions using the booking calendar. Questions on Instagram.
             </p>
             <p className="mt-4 text-sm">
               <a
