@@ -326,11 +326,13 @@ export function Book() {
                     disabled={blocked}
                     onClick={() => toggleHour(h)}
                     className={[
-                      'rounded-xl border px-3 py-3 text-left text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950',
+                      'rounded-xl border px-3 py-3 text-left text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950',
                       blocked
                         ? 'cursor-not-allowed border-white/10 bg-white/5 text-zinc-600'
                         : 'border-white/10 bg-white/5 text-white hover:bg-white/10',
-                      selected ? 'border-white/30 bg-white/10' : '',
+                      selected
+                        ? 'border-emerald-400/60 bg-emerald-400/10 ring-2 ring-emerald-300 focus-visible:ring-emerald-200'
+                        : 'focus-visible:ring-zinc-200',
                     ].join(' ')}
                     aria-pressed={selected}
                     aria-label={hourLabel(h)}
