@@ -84,8 +84,8 @@ Update:
 
 Your Web App must support:
 
-- `GET ?mode=busy&date=YYYY-MM-DD` → returns `{ ok:true, busyHours:[0..23] }`
-- `GET ?mode=book&name=...&phone=...&instagram=...&date=YYYY-MM-DD&startHour=0..23&durationMinutes=...` → creates an event and returns `{ ok:true }`
+- `GET ?mode=busy&date=YYYY-MM-DD&room=A|B` → returns `{ ok:true, busyHours:[0..23] }` (busy hours **for that room**)
+- `GET ?mode=book&name=...&phone=...&instagram=...&date=YYYY-MM-DD&room=A|B&startHour=0..23&durationMinutes=...` → creates an event and returns `{ ok:true }`
 
 ### 24/7 + rule enforcement
 

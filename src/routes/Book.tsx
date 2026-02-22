@@ -6,7 +6,9 @@ import {
   instagramUrl,
   minAdvanceHours,
   minHours,
-  rates,
+  getRoomById,
+  rooms,
+  type StudioRoomId,
 } from '../lib/constants'
 import { bookSession, fetchBusyHours } from '../lib/bookingApi'
 import { ButtonExternalLink, ButtonLink, Button } from '../components/Button'
@@ -47,6 +49,8 @@ export function Book() {
   const [viewMonth, setViewMonth] = useState(() => startOfMonth(new Date()))
   const [date, setDate] = useState(() => isoLocalDate(new Date()))
 
+  const [roomId, setRoomId] = useState<StudioRoomId>('A')
+
   const [busyHours, setBusyHours] = useState<number[] | null>(null)
   const busySet = useMemo(() => new Set(busyHours ?? []), [busyHours])
   const [loadingBusy, setLoadingBusy] = useState(false)
@@ -63,6 +67,7 @@ export function Book() {
   const [submitMsg, setSubmitMsg] = useState<string | null>(null)
   const [bookingSucceeded, setBookingSucceeded] = useState(false)
   const [bookedHours, setBookedHours] = useState<number | null>(null)
+  const [bookedRoomId, setBookedRoomId] = useState<StudioRoomId | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -72,7 +77,7 @@ export function Book() {
     setSelectedHours([])
     ;(async () => {
       try {
-        const data = await fetchBusyHours(date)
+        const data = await fetchBusyHours(date, roomId)
         if (!cancelled) setBusyHours(data)
       } catch (e) {
         if (!cancelled) {
@@ -86,7 +91,7 @@ export function Book() {
     return () => {
       cancelled = true
     }
-  }, [date])
+  }, [date, roomId])
 
   const minStart = useMemo(() => {
     const now = new Date()
@@ -153,7 +158,11 @@ export function Book() {
     selectedHours.every((h) => isHourAvailable(h)) &&
     !submitting
 
-  const successfulSessionTotal = bookedHours == null ? 0 : bookedHours * rates.withEngineerHourly
+  const activeRoom = useMemo(() => getRoomById(roomId), [roomId])
+  const successfulRoom = bookedRoomId == null ? activeRoom : getRoomById(bookedRoomId)
+
+  const successfulSessionTotal =
+    bookedHours == null ? 0 : bookedHours * successfulRoom.hourlyRate
   const successfulDepositAmount =
     successfulSessionTotal * (depositPercent / 100)
   const successfulDepositDisplay = successfulDepositAmount.toFixed(2)
@@ -182,6 +191,7 @@ export function Book() {
         phone: phone.trim(),
         instagram: ig.trim(),
         date,
+        roomId,
         startHour: selectedStartHour,
         durationMinutes: selectedDurationHours * 60,
         notes: notes.trim() || undefined,
@@ -189,14 +199,16 @@ export function Book() {
       setSubmitMsg('Request received — check your email/DMs for confirmation (if applicable).')
       setBookingSucceeded(true)
       setBookedHours(selectedDurationHours)
+      setBookedRoomId(roomId)
       // Refresh availability after booking
-      const data = await fetchBusyHours(date)
+      const data = await fetchBusyHours(date, roomId)
       setBusyHours(data)
       setSelectedHours([])
     } catch (e) {
       setSubmitMsg(e instanceof Error ? e.message : 'Booking failed')
       setBookingSucceeded(false)
       setBookedHours(null)
+      setBookedRoomId(null)
     } finally {
       setSubmitting(false)
     }
@@ -306,6 +318,27 @@ export function Book() {
                 <p className="mt-1 text-xs text-zinc-500">
                   Select at least {minHours} consecutive hourly slots (max 12).
                 </p>
+                <p className="mt-2 text-xs text-zinc-400">
+                  Selected room: <span className="text-white">{activeRoom.name}</span> · $
+                  {activeRoom.hourlyRate}/hr
+                </p>
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-medium text-zinc-300" htmlFor="bkRoom">
+                  Room
+                </label>
+                <select
+                  id="bkRoom"
+                  value={roomId}
+                  onChange={(e) => setRoomId(e.target.value as StudioRoomId)}
+                  className="w-full rounded-lg border border-white/10 bg-zinc-950/60 px-3 py-2 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
+                >
+                  {rooms.map((r) => (
+                    <option key={r.id} value={r.id}>
+                      {r.name} · ${r.hourlyRate}/hr
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
@@ -424,7 +457,7 @@ export function Book() {
               <p className="text-sm text-zinc-400">
                 {selectedStartHour == null
                   ? `Select at least ${minHours} consecutive hourly slots.`
-                  : `Selected: ${selectedRange} (${selectedDurationHours} hour${selectedDurationHours === 1 ? '' : 's'}).`}
+                  : `Selected: ${selectedRange} · ${activeRoom.name} (${selectedDurationHours} hour${selectedDurationHours === 1 ? '' : 's'}).`}
               </p>
             </div>
 
@@ -437,7 +470,7 @@ export function Book() {
             {bookingSucceeded ? (
               <div className="mt-4 rounded-xl border border-white/10 bg-white/5 p-4">
                 <p className="text-sm text-zinc-200">
-                  Deposit is {depositPercent}% of your session total (with engineer rate).
+                  Deposit is {depositPercent}% non-refundable of your session total ({successfulRoom.name}).
                 </p>
                 <p className="mt-1 text-sm text-zinc-300">
                   Session total: ${successfulSessionTotalDisplay} · Deposit due: ${successfulDepositDisplay}

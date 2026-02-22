@@ -14,7 +14,7 @@ export function Rates() {
       <SectionHeader
         eyebrow="Rates"
         title="Studio rates"
-        description={`Transparent pricing at ${studioName}. Book from the calendar, and DM us if you have questions.`}
+        description={`Room A and Room B pricing at ${studioName}. Book from the calendar, and DM us if you have questions.`}
       />
 
       <div className="mt-10">

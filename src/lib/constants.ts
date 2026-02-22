@@ -9,9 +9,22 @@ export const contactEmail = 'studios.mobb@gmail.com'
 export const contactPhoneDisplay = '(470) 534-7681'
 export const contactPhoneTel = '+14705347681'
 
-export const rates = {
-  withEngineerHourly: 50,
-} as const
+export type StudioRoomId = 'A' | 'B'
+
+export const rooms: Array<{
+  id: StudioRoomId
+  name: string
+  hourlyRate: number
+}> = [
+  { id: 'A', name: 'Room A', hourlyRate: 60 },
+  { id: 'B', name: 'Room B', hourlyRate: 40 },
+] as const
+
+export function getRoomById(id: StudioRoomId) {
+  const room = rooms.find((r) => r.id === id)
+  if (!room) throw new Error(`Unknown room id: ${id}`)
+  return room
+}
 
 export const depositPercent = 50
 export const minHours = 2

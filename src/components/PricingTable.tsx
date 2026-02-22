@@ -1,20 +1,22 @@
-import { depositPercent, minHours, rates } from '../lib/constants'
+import { depositPercent, minHours, rooms } from '../lib/constants'
 import { Card, CardBody } from './Card'
 
 export function PricingTable() {
   return (
     <div className="grid gap-4 lg:grid-cols-2">
-      <Card>
-        <CardBody className="p-6">
-          <p className="text-sm text-zinc-400">Studio session (engineer included)</p>
-          <p className="mt-2 text-3xl font-semibold tracking-tight text-white">
-            ${rates.withEngineerHourly}/hr
-          </p>
-          <p className="mt-2 text-sm text-zinc-300">
-            All sessions are booked with an engineer.
-          </p>
-        </CardBody>
-      </Card>
+      <div className="grid gap-4">
+        {rooms.map((room) => (
+          <Card key={room.id}>
+            <CardBody className="p-6">
+              <p className="text-sm text-zinc-400">{room.name}</p>
+              <p className="mt-2 text-3xl font-semibold tracking-tight text-white">
+                ${room.hourlyRate}/hr
+              </p>
+              <p className="mt-2 text-sm text-zinc-300">Studio session (engineer included).</p>
+            </CardBody>
+          </Card>
+        ))}
+      </div>
 
       <div className="grid gap-4">
         <Card>

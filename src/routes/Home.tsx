@@ -4,7 +4,7 @@ import {
   instagramHandle,
   instagramUrl,
   minHours,
-  rates,
+  rooms,
   studioName,
 } from '../lib/constants'
 import { ButtonExternalLink, ButtonLink } from '../components/Button'
@@ -101,17 +101,24 @@ export function Home() {
                 Rates
               </h2>
               <p className="mt-2 text-sm text-zinc-400">
-                Minimum {minHours} hours. {depositPercent}% deposit required to lock in.
+                Minimum {minHours} hours. {depositPercent}% non-refundable deposit required to lock in.
               </p>
 
               <div className="mt-6 grid gap-3">
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                  <p className="text-sm text-zinc-400">Studio session (engineer included)</p>
-                  <p className="mt-2 text-2xl font-semibold text-white">
-                    ${rates.withEngineerHourly}/hr
-                  </p>
-                  <p className="mt-2 text-sm text-zinc-300">All sessions are booked with an engineer.</p>
-                </div>
+                {rooms.map((room) => (
+                  <div
+                    key={room.id}
+                    className="rounded-2xl border border-white/10 bg-white/5 p-5"
+                  >
+                    <p className="text-sm text-zinc-400">{room.name}</p>
+                    <p className="mt-2 text-2xl font-semibold text-white">
+                      ${room.hourlyRate}/hr
+                    </p>
+                    <p className="mt-2 text-sm text-zinc-300">
+                      Studio session (engineer included).
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -196,7 +203,7 @@ export function Home() {
               items={[
                 {
                   question: 'Do you require a deposit?',
-                  answer: `Yes—${depositPercent}% deposit is required to lock in your session.`,
+                  answer: `Yes—${depositPercent}% non-refundable deposit is required to lock in your session.`,
                 },
                 {
                   question: 'Minimum booking time?',
