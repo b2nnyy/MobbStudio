@@ -5,6 +5,10 @@
 /* Global base styles (no images required) */
 @layer base {
   :root {
+    color-scheme: light;
+  }
+
+  html.dark {
     color-scheme: dark;
   }
 
@@ -14,19 +18,35 @@
   }
 
   body {
-    @apply bg-zinc-950 text-zinc-100 antialiased;
+    @apply bg-white text-zinc-900 antialiased;
     @apply font-sans;
   }
 
+  html.dark body {
+    @apply bg-zinc-950 text-zinc-100;
+  }
+
   a {
-    @apply text-zinc-100 underline-offset-4;
+    @apply text-zinc-900 underline-offset-4;
   }
 
   a:hover {
+    @apply text-zinc-950;
+  }
+
+  html.dark a {
+    @apply text-zinc-100;
+  }
+
+  html.dark a:hover {
     @apply text-white;
   }
 
   ::selection {
+    @apply bg-zinc-900 text-white;
+  }
+
+  html.dark ::selection {
     @apply bg-zinc-200 text-zinc-900;
   }
 }

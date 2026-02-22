@@ -30,15 +30,15 @@ export function Contact() {
       <section className="mt-10">
         <Card>
           <CardBody>
-            <h2 className="text-xl font-semibold tracking-tight text-white">
+            <h2 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">
               Other contact methods
             </h2>
             <dl className="mt-5 space-y-4 text-sm">
               <div>
-                <dt className="text-zinc-400">Email</dt>
+                <dt className="text-zinc-600 dark:text-zinc-400">Email</dt>
                 <dd className="mt-1">
                   <a
-                    className="text-zinc-200 underline decoration-white/30 hover:text-white hover:decoration-white"
+                    className="text-zinc-800 underline decoration-zinc-400/50 hover:text-zinc-950 hover:decoration-zinc-500 dark:text-zinc-200 dark:decoration-white/30 dark:hover:text-white dark:hover:decoration-white"
                     href={`mailto:${contactEmail}`}
                   >
                     {contactEmail}
@@ -46,10 +46,10 @@ export function Contact() {
                 </dd>
               </div>
               <div>
-                <dt className="text-zinc-400">Phone</dt>
+                <dt className="text-zinc-600 dark:text-zinc-400">Phone</dt>
                 <dd className="mt-1">
                   <a
-                    className="text-zinc-200 underline decoration-white/30 hover:text-white hover:decoration-white"
+                    className="text-zinc-800 underline decoration-zinc-400/50 hover:text-zinc-950 hover:decoration-zinc-500 dark:text-zinc-200 dark:decoration-white/30 dark:hover:text-white dark:hover:decoration-white"
                     href={`tel:${contactPhoneTel}`}
                   >
                     {contactPhoneDisplay}

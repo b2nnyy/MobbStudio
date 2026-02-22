@@ -239,7 +239,7 @@ export function Book() {
         <Card className="lg:col-span-5">
           <CardBody>
             <div className="flex items-center justify-between gap-3">
-              <p className="text-sm font-semibold text-white">{monthLabel(viewMonth)}</p>
+              <p className="text-sm font-semibold text-zinc-950 dark:text-white">{monthLabel(viewMonth)}</p>
               <div className="flex gap-2">
                 <Button
                   type="button"
@@ -260,7 +260,7 @@ export function Book() {
               </div>
             </div>
 
-            <div className="mt-4 grid grid-cols-7 gap-2 text-xs text-zinc-400">
+            <div className="mt-4 grid grid-cols-7 gap-2 text-xs text-zinc-600 dark:text-zinc-400">
               {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d) => (
                 <div key={d} className="text-center">
                   {d}
@@ -288,11 +288,13 @@ export function Book() {
                       setViewMonth(startOfMonth(d))
                     }}
                     className={[
-                      'aspect-square rounded-lg border px-2 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950',
+                      'aspect-square rounded-lg border px-2 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-zinc-200 dark:focus-visible:ring-offset-zinc-950',
                       isPast
-                        ? 'cursor-not-allowed border-white/10 bg-white/5 text-zinc-600'
-                        : 'border-white/10 bg-white/5 text-white hover:bg-white/10',
-                      isSelected ? 'ring-2 ring-zinc-200 ring-offset-2 ring-offset-zinc-950' : '',
+                        ? 'cursor-not-allowed border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-white/10 dark:bg-white/5 dark:text-zinc-600'
+                        : 'border-zinc-200 bg-white text-zinc-900 hover:bg-zinc-50 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10',
+                      isSelected
+                        ? 'ring-2 ring-zinc-900/30 ring-offset-2 ring-offset-white dark:ring-zinc-200 dark:ring-offset-zinc-950'
+                        : '',
                     ].join(' ')}
                     aria-pressed={isSelected}
                     aria-label={d.toDateString()}
@@ -303,7 +305,7 @@ export function Book() {
               })}
             </div>
 
-            <p className="mt-4 text-xs text-zinc-400">
+            <p className="mt-4 text-xs text-zinc-600 dark:text-zinc-400">
               Times shown in your local timezone. Please book at least {minAdvanceHours} hours ahead.
             </p>
           </CardBody>
@@ -313,25 +315,25 @@ export function Book() {
           <CardBody>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-sm font-semibold text-white">Time slots</p>
-                <p className="mt-1 text-xs text-zinc-400">{date}</p>
-                <p className="mt-1 text-xs text-zinc-500">
+                <p className="text-sm font-semibold text-zinc-950 dark:text-white">Time slots</p>
+                <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">{date}</p>
+                <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-500">
                   Select at least {minHours} consecutive hourly slots (max 12).
                 </p>
-                <p className="mt-2 text-xs text-zinc-400">
-                  Selected room: <span className="text-white">{activeRoom.name}</span> · $
+                <p className="mt-2 text-xs text-zinc-600 dark:text-zinc-400">
+                  Selected room: <span className="text-zinc-950 dark:text-white">{activeRoom.name}</span> · $
                   {activeRoom.hourlyRate}/hr
                 </p>
               </div>
               <div className="flex flex-col gap-1">
-                <label className="text-xs font-medium text-zinc-300" htmlFor="bkRoom">
+                <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300" htmlFor="bkRoom">
                   Room
                 </label>
                 <select
                   id="bkRoom"
                   value={roomId}
                   onChange={(e) => setRoomId(e.target.value as StudioRoomId)}
-                  className="w-full rounded-lg border border-white/10 bg-zinc-950/60 px-3 py-2 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
+                  className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-white/10 dark:bg-zinc-950/60 dark:text-white dark:focus-visible:ring-zinc-200 dark:focus-visible:ring-offset-zinc-950"
                 >
                   {rooms.map((r) => (
                     <option key={r.id} value={r.id}>
@@ -343,7 +345,7 @@ export function Book() {
             </div>
 
             {busyError ? (
-              <p className="mt-4 text-sm text-zinc-300">
+              <p className="mt-4 text-sm text-zinc-700 dark:text-zinc-300">
                 Couldn’t load availability: {busyError}
               </p>
             ) : null}
@@ -372,19 +374,24 @@ export function Book() {
                     disabled={blocked}
                     onClick={() => toggleHour(h)}
                     className={[
-                      'rounded-xl border px-3 py-3 text-left text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950',
+                      'rounded-xl border px-3 py-3 text-left text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-zinc-950',
                       blocked
-                        ? 'cursor-not-allowed border-white/10 bg-white/5 text-zinc-600'
-                        : 'border-white/10 bg-white/5 text-white hover:bg-white/10',
+                        ? 'cursor-not-allowed border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-white/10 dark:bg-white/5 dark:text-zinc-600'
+                        : 'border-zinc-200 bg-white text-zinc-900 hover:bg-zinc-50 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10',
                       selected
                         ? 'border-emerald-300 bg-emerald-500/25 text-emerald-50 ring-2 ring-emerald-200 shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_0_24px_rgba(16,185,129,0.18)] focus-visible:ring-emerald-100'
-                        : 'focus-visible:ring-zinc-200',
+                        : 'focus-visible:ring-zinc-900/30 dark:focus-visible:ring-zinc-200',
                     ].join(' ')}
                     aria-pressed={selected}
                     aria-label={hourLabel(h)}
                   >
                     <div className="font-semibold">{hourLabel(h)}</div>
-                    <div className={['mt-1 text-xs', selected ? 'text-emerald-100/90' : 'text-zinc-400'].join(' ')}>
+                    <div
+                      className={[
+                        'mt-1 text-xs',
+                        selected ? 'text-emerald-100/90' : 'text-zinc-500 dark:text-zinc-400',
+                      ].join(' ')}
+                    >
                       {statusLabel}
                     </div>
                   </button>
@@ -394,24 +401,24 @@ export function Book() {
 
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
               <div>
-                <label className="text-sm text-zinc-200" htmlFor="bkName">
+                <label className="text-sm text-zinc-700 dark:text-zinc-200" htmlFor="bkName">
                   Name
                 </label>
                 <input
                   id="bkName"
-                  className="mt-2 w-full rounded-lg border border-white/10 bg-zinc-950/60 px-3 py-2 text-sm text-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
+                  className="mt-2 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-white/10 dark:bg-zinc-950/60 dark:text-white dark:focus-visible:ring-zinc-200 dark:focus-visible:ring-offset-zinc-950"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   autoComplete="name"
                 />
               </div>
               <div>
-                <label className="text-sm text-zinc-200" htmlFor="bkPhone">
+                <label className="text-sm text-zinc-700 dark:text-zinc-200" htmlFor="bkPhone">
                   Phone
                 </label>
                 <input
                   id="bkPhone"
-                  className="mt-2 w-full rounded-lg border border-white/10 bg-zinc-950/60 px-3 py-2 text-sm text-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
+                  className="mt-2 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-white/10 dark:bg-zinc-950/60 dark:text-white dark:focus-visible:ring-zinc-200 dark:focus-visible:ring-offset-zinc-950"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   inputMode="tel"
@@ -419,12 +426,12 @@ export function Book() {
                 />
               </div>
               <div>
-                <label className="text-sm text-zinc-200" htmlFor="bkIg">
+                <label className="text-sm text-zinc-700 dark:text-zinc-200" htmlFor="bkIg">
                   Instagram
                 </label>
                 <input
                   id="bkIg"
-                  className="mt-2 w-full rounded-lg border border-white/10 bg-zinc-950/60 px-3 py-2 text-sm text-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
+                  className="mt-2 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-white/10 dark:bg-zinc-950/60 dark:text-white dark:focus-visible:ring-zinc-200 dark:focus-visible:ring-offset-zinc-950"
                   value={ig}
                   onChange={(e) => setIg(e.target.value)}
                   placeholder="@handle"
@@ -433,12 +440,12 @@ export function Book() {
             </div>
 
             <div className="mt-3">
-              <label className="text-sm text-zinc-200" htmlFor="bkNotes">
+              <label className="text-sm text-zinc-700 dark:text-zinc-200" htmlFor="bkNotes">
                 Notes (optional)
               </label>
               <textarea
                 id="bkNotes"
-                className="mt-2 min-h-24 w-full resize-y rounded-lg border border-white/10 bg-zinc-950/60 px-3 py-2 text-sm text-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
+                className="mt-2 min-h-24 w-full resize-y rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-white/10 dark:bg-zinc-950/60 dark:text-white dark:focus-visible:ring-zinc-200 dark:focus-visible:ring-offset-zinc-950"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="What are you working on?"
@@ -454,7 +461,7 @@ export function Book() {
               >
                 {submitting ? 'Sending…' : 'Request booking'}
               </Button>
-              <p className="text-sm text-zinc-400">
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">
                 {selectedStartHour == null
                   ? `Select at least ${minHours} consecutive hourly slots.`
                   : `Selected: ${selectedRange} · ${activeRoom.name} (${selectedDurationHours} hour${selectedDurationHours === 1 ? '' : 's'}).`}
@@ -462,17 +469,17 @@ export function Book() {
             </div>
 
             {submitMsg ? (
-              <p className="mt-3 text-sm text-zinc-300" role="status" aria-live="polite">
+              <p className="mt-3 text-sm text-zinc-700 dark:text-zinc-300" role="status" aria-live="polite">
                 {submitMsg}
               </p>
             ) : null}
 
             {bookingSucceeded ? (
-              <div className="mt-4 rounded-xl border border-white/10 bg-white/5 p-4">
-                <p className="text-sm text-zinc-200">
+              <div className="mt-4 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/5 dark:shadow-none">
+                <p className="text-sm text-zinc-900 dark:text-zinc-200">
                   Deposit is {depositPercent}% non-refundable of your session total ({successfulRoom.name}).
                 </p>
-                <p className="mt-1 text-sm text-zinc-300">
+                <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
                   Session total: ${successfulSessionTotalDisplay} · Deposit due: ${successfulDepositDisplay}
                 </p>
                 <div className="mt-3">
@@ -489,10 +496,10 @@ export function Book() {
       <div className="mt-8 grid gap-4 lg:grid-cols-2">
         <Card>
           <CardBody>
-            <h2 className="text-xl font-semibold tracking-tight text-white">
+            <h2 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">
               Booking notes
             </h2>
-            <ul className="mt-4 space-y-2 text-sm text-zinc-300">
+            <ul className="mt-4 space-y-2 text-sm text-zinc-700 dark:text-zinc-300">
               <li className="flex gap-2">
                 <span className="mt-2 size-1.5 shrink-0 rounded-full bg-zinc-300" />
                 <span>Minimum booking: {minHours} hours</span>
@@ -513,10 +520,10 @@ export function Book() {
 
         <Card>
           <CardBody>
-            <h2 className="text-xl font-semibold tracking-tight text-white">
+            <h2 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">
               Prefer Instagram?
             </h2>
-            <p className="mt-2 text-sm text-zinc-300">
+            <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-300">
               If you have special requests or need help finding a time, DM us and
               we’ll sort it out.
             </p>

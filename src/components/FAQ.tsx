@@ -15,8 +15,8 @@ export function FAQ({
       {items.map((item) => (
         <Card key={item.question}>
           <CardBody className="p-6">
-            <h3 className="text-base font-semibold text-white">{item.question}</h3>
-            <p className="mt-2 text-sm text-zinc-300">{item.answer}</p>
+            <h3 className="text-base font-semibold text-zinc-950 dark:text-white">{item.question}</h3>
+            <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-300">{item.answer}</p>
           </CardBody>
         </Card>
       ))}

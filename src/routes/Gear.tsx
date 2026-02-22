@@ -13,7 +13,7 @@ export function Gear() {
       <div className="mt-10">
         <Card>
           <CardBody>
-            <p className="text-sm text-zinc-300">
+            <p className="text-sm text-zinc-700 dark:text-zinc-300">
               Gear list with photos is coming soon. DM us on Instagram if you have any questions.
             </p>
           </CardBody>

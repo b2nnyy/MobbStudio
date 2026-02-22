@@ -21,17 +21,17 @@ export function Rates() {
         <PricingTable />
       </div>
 
-      <section className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-8">
-        <p className="text-sm text-zinc-300">
+      <section className="mt-8 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/5 dark:shadow-none sm:p-8">
+        <p className="text-sm text-zinc-700 dark:text-zinc-300">
           Rates may change. DM for special requests.
         </p>
       </section>
 
-      <section className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-8">
-        <h2 className="text-xl font-semibold tracking-tight text-white">
+      <section className="mt-10 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/5 dark:shadow-none sm:p-8">
+        <h2 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">
           Book a session
         </h2>
-        <p className="mt-2 text-sm text-zinc-300">
+        <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-300">
           Use the booking calendar to pick a time. If you have special requests, DM us.
         </p>
         <div className="mt-5 flex flex-col gap-3 sm:flex-row">
@@ -40,7 +40,7 @@ export function Rates() {
             Questions? DM {instagramHandle}
           </ButtonExternalLink>
           <ButtonLink to="/services">See services</ButtonLink>
-          <Link className="self-center text-sm text-zinc-300 hover:text-white" to="/policies">
+          <Link className="self-center text-sm text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white" to="/policies">
             Policies →
           </Link>
         </div>

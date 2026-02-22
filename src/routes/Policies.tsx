@@ -14,12 +14,12 @@ export function Policies() {
       <div className="mt-10 grid gap-4">
         <Card>
           <CardBody>
-            <h2 className="text-xl font-semibold tracking-tight text-white">Deposit</h2>
-            <ul className="mt-4 space-y-2 text-sm text-zinc-300">
+            <h2 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">Deposit</h2>
+            <ul className="mt-4 space-y-2 text-sm text-zinc-700 dark:text-zinc-300">
               <li className="flex gap-2">
                 <span className="mt-2 size-1.5 shrink-0 rounded-full bg-zinc-300" />
                 <span>
-                  <span className="text-white">{depositPercent}% non-refundable deposit</span> required to
+                  <span className="text-zinc-950 dark:text-white">{depositPercent}% non-refundable deposit</span> required to
                   lock in your session.
                 </span>
               </li>
@@ -33,8 +33,8 @@ export function Policies() {
 
         <Card>
           <CardBody>
-            <h2 className="text-xl font-semibold tracking-tight text-white">Late arrivals</h2>
-            <ul className="mt-4 space-y-2 text-sm text-zinc-300">
+            <h2 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">Late arrivals</h2>
+            <ul className="mt-4 space-y-2 text-sm text-zinc-700 dark:text-zinc-300">
               <li className="flex gap-2">
                 <span className="mt-2 size-1.5 shrink-0 rounded-full bg-zinc-300" />
                 <span>Session time begins at the scheduled booking time, not arrival time.</span>
@@ -58,8 +58,8 @@ export function Policies() {
 
         <Card>
           <CardBody>
-            <h2 className="text-xl font-semibold tracking-tight text-white">Payment methods</h2>
-            <ul className="mt-4 space-y-2 text-sm text-zinc-300">
+            <h2 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">Payment methods</h2>
+            <ul className="mt-4 space-y-2 text-sm text-zinc-700 dark:text-zinc-300">
               {['Cash', 'Cash App', 'Zelle', 'Apple Pay'].map((m) => (
                 <li key={m} className="flex gap-2">
                   <span className="mt-2 size-1.5 shrink-0 rounded-full bg-zinc-300" />
@@ -72,8 +72,8 @@ export function Policies() {
 
         <Card>
           <CardBody>
-            <h2 className="text-xl font-semibold tracking-tight text-white">File delivery</h2>
-            <ul className="mt-4 space-y-2 text-sm text-zinc-300">
+            <h2 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">File delivery</h2>
+            <ul className="mt-4 space-y-2 text-sm text-zinc-700 dark:text-zinc-300">
               <li className="flex gap-2">
                 <span className="mt-2 size-1.5 shrink-0 rounded-full bg-zinc-300" />
                 <span>Rough mixes may be provided after the session.</span>
@@ -91,8 +91,8 @@ export function Policies() {
 
         <Card>
           <CardBody>
-            <h2 className="text-xl font-semibold tracking-tight text-white">Studio rules & conduct</h2>
-            <ul className="mt-4 space-y-2 text-sm text-zinc-300">
+            <h2 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">Studio rules & conduct</h2>
+            <ul className="mt-4 space-y-2 text-sm text-zinc-700 dark:text-zinc-300">
               <li className="flex gap-2">
                 <span className="mt-2 size-1.5 shrink-0 rounded-full bg-zinc-300" />
                 <span>Respect all equipment and staff. Clients are responsible for any damages caused.</span>
@@ -119,8 +119,8 @@ export function Policies() {
 
         <Card>
           <CardBody>
-            <h2 className="text-xl font-semibold tracking-tight text-white">Guests</h2>
-            <ul className="mt-4 space-y-2 text-sm text-zinc-300">
+            <h2 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">Guests</h2>
+            <ul className="mt-4 space-y-2 text-sm text-zinc-700 dark:text-zinc-300">
               <li className="flex gap-2">
                 <span className="mt-2 size-1.5 shrink-0 rounded-full bg-zinc-300" />
                 <span>Limit guests to a reasonable number to maintain a productive environment.</span>

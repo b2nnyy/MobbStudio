@@ -16,9 +16,9 @@ function ServiceSection({
   return (
     <Card>
       <CardBody>
-        <h2 className="text-xl font-semibold tracking-tight text-white">{title}</h2>
-        <p className="mt-2 text-sm leading-relaxed text-zinc-300">{description}</p>
-        <ul className="mt-5 space-y-2 text-sm text-zinc-300">
+        <h2 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">{title}</h2>
+        <p className="mt-2 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">{description}</p>
+        <ul className="mt-5 space-y-2 text-sm text-zinc-700 dark:text-zinc-300">
           {bullets.map((b) => (
             <li key={b} className="flex gap-2">
               <span className="mt-2 size-1.5 shrink-0 rounded-full bg-zinc-300" />
@@ -48,7 +48,7 @@ export function Services() {
         <ButtonExternalLink href={instagramUrl} variant="secondary">
           Questions? DM {instagramHandle}
         </ButtonExternalLink>
-        <Link className="self-center text-sm text-zinc-300 hover:text-white" to="/contact">
+        <Link className="self-center text-sm text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white" to="/contact">
           Contact →
         </Link>
       </div>

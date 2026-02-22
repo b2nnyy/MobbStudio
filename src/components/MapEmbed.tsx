@@ -12,7 +12,7 @@ export function MapEmbed({
   clickLabel?: string
 }) {
   return (
-    <div className="relative aspect-[16/10] w-full bg-zinc-900">
+    <div className="relative aspect-[16/10] w-full bg-zinc-100 dark:bg-zinc-900">
       <iframe
         className="h-full w-full"
         src={src}
@@ -25,7 +25,7 @@ export function MapEmbed({
           type="button"
           onClick={onClick}
           aria-label={clickLabel}
-          className="absolute inset-0 cursor-pointer bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
+          className="absolute inset-0 cursor-pointer bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-zinc-200 dark:focus-visible:ring-offset-zinc-950"
         />
       ) : null}
     </div>
