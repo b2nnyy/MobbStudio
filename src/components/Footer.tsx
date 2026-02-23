@@ -9,12 +9,9 @@ import {
 } from '../lib/constants'
 
 const nav = [
-  { label: 'Home', to: '/' },
   { label: 'Book', to: '/book' },
-  { label: 'Services', to: '/services' },
   { label: 'Rates', to: '/rates' },
   { label: 'Policies', to: '/policies' },
-  { label: 'Gear', to: '/gear' },
   { label: 'Location', to: '/location' },
   { label: 'Contact', to: '/contact' },
 ] as const

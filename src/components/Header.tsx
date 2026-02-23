@@ -5,12 +5,9 @@ import { ButtonExternalLink, ButtonLink } from './Button'
 import { ThemeToggle } from './ThemeToggle'
 
 const nav = [
-  { label: 'Home', to: '/' },
   { label: 'Book', to: '/book' },
-  { label: 'Services', to: '/services' },
   { label: 'Rates', to: '/rates' },
   { label: 'Policies', to: '/policies' },
-  { label: 'Gear', to: '/gear' },
   { label: 'Location', to: '/location' },
   { label: 'Contact', to: '/contact' },
 ] as const
@@ -55,7 +52,7 @@ export function Header() {
 
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
             {nav.map((item) => (
-              <NavLink key={item.to} to={item.to} className={navLinkClass} end={item.to === '/'}>
+              <NavLink key={item.to} to={item.to} className={navLinkClass} end>
                 {item.label}
               </NavLink>
             ))}
@@ -97,7 +94,7 @@ export function Header() {
                 <NavLink
                   key={item.to}
                   to={item.to}
-                  end={item.to === '/'}
+                  end
                   className={({ isActive }) =>
                     [
                       'rounded-md px-3 py-2 text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-zinc-200 dark:focus-visible:ring-offset-zinc-950',

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import {
   cashAppUrl,
   depositPercent,
@@ -45,11 +46,17 @@ function daysInMonth(d: Date) {
 }
 
 export function Book() {
+  const location = useLocation()
   const today = useMemo(() => new Date(), [])
   const [viewMonth, setViewMonth] = useState(() => startOfMonth(new Date()))
   const [date, setDate] = useState(() => isoLocalDate(new Date()))
 
-  const [roomId, setRoomId] = useState<StudioRoomId>('A')
+  const roomFromQuery = useMemo(() => {
+    const r = new URLSearchParams(location.search).get('room')
+    return r === 'A' || r === 'B' ? (r as StudioRoomId) : null
+  }, [location.search])
+
+  const [roomId, setRoomId] = useState<StudioRoomId>(() => roomFromQuery ?? 'A')
 
   const [busyHours, setBusyHours] = useState<number[] | null>(null)
   const busySet = useMemo(() => new Set(busyHours ?? []), [busyHours])
@@ -68,6 +75,10 @@ export function Book() {
   const [bookingSucceeded, setBookingSucceeded] = useState(false)
   const [bookedHours, setBookedHours] = useState<number | null>(null)
   const [bookedRoomId, setBookedRoomId] = useState<StudioRoomId | null>(null)
+
+  useEffect(() => {
+    if (roomFromQuery && roomFromQuery !== roomId) setRoomId(roomFromQuery)
+  }, [roomFromQuery, roomId])
 
   useEffect(() => {
     let cancelled = false
@@ -323,6 +334,16 @@ export function Book() {
                 <p className="mt-2 text-xs text-zinc-600 dark:text-zinc-400">
                   Selected room: <span className="text-zinc-950 dark:text-white">{activeRoom.name}</span> · $
                   {activeRoom.hourlyRate}/hr
+                </p>
+                <p className="mt-2 text-xs text-zinc-600 dark:text-zinc-400">
+                  Key policies: {minHours} hour minimum · {depositPercent}% non-refundable deposit · late arrivals charged
+                  by booked time.{' '}
+                  <Link
+                    className="underline decoration-zinc-400/50 hover:decoration-zinc-500 dark:decoration-white/30 dark:hover:decoration-white"
+                    to="/policies"
+                  >
+                    Read policies →
+                  </Link>
                 </p>
               </div>
               <div className="flex flex-col gap-1">
