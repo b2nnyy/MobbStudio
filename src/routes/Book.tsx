@@ -11,7 +11,7 @@ import {
   rooms,
   type StudioRoomId,
 } from '../lib/constants'
-import { bookSession, fetchBusyHours } from '../lib/bookingApi'
+import { createHold, fetchBusyHours } from '../lib/bookingApi'
 import { ButtonExternalLink, ButtonLink, Button } from '../components/Button'
 import { Card, CardBody } from '../components/Card'
 import { SectionHeader } from '../components/Section'
@@ -72,9 +72,11 @@ export function Book() {
 
   const [submitting, setSubmitting] = useState(false)
   const [submitMsg, setSubmitMsg] = useState<string | null>(null)
-  const [bookingSucceeded, setBookingSucceeded] = useState(false)
-  const [bookedHours, setBookedHours] = useState<number | null>(null)
-  const [bookedRoomId, setBookedRoomId] = useState<StudioRoomId | null>(null)
+  const [holdCreated, setHoldCreated] = useState(false)
+  const [holdId, setHoldId] = useState<string | null>(null)
+  const [holdExpiresAt, setHoldExpiresAt] = useState<string | null>(null)
+  const [heldHours, setHeldHours] = useState<number | null>(null)
+  const [heldRoomId, setHeldRoomId] = useState<StudioRoomId | null>(null)
 
   useEffect(() => {
     if (roomFromQuery && roomFromQuery !== roomId) setRoomId(roomFromQuery)
@@ -170,10 +172,10 @@ export function Book() {
     !submitting
 
   const activeRoom = useMemo(() => getRoomById(roomId), [roomId])
-  const successfulRoom = bookedRoomId == null ? activeRoom : getRoomById(bookedRoomId)
+  const successfulRoom = heldRoomId == null ? activeRoom : getRoomById(heldRoomId)
 
   const successfulSessionTotal =
-    bookedHours == null ? 0 : bookedHours * successfulRoom.hourlyRate
+    heldHours == null ? 0 : heldHours * successfulRoom.hourlyRate
   const successfulDepositAmount =
     successfulSessionTotal * (depositPercent / 100)
   const successfulDepositDisplay = successfulDepositAmount.toFixed(2)
@@ -194,10 +196,13 @@ export function Book() {
     if (!canSubmit || selectedStartHour == null) return
     setSubmitting(true)
     setSubmitMsg(null)
-    setBookingSucceeded(false)
-    setBookedHours(null)
+    setHoldCreated(false)
+    setHoldId(null)
+    setHoldExpiresAt(null)
+    setHeldHours(null)
+    setHeldRoomId(null)
     try {
-      await bookSession({
+      const res = await createHold({
         name: name.trim(),
         phone: phone.trim(),
         instagram: ig.trim(),
@@ -207,19 +212,25 @@ export function Book() {
         durationMinutes: selectedDurationHours * 60,
         notes: notes.trim() || undefined,
       })
-      setSubmitMsg('Request received — check your email/DMs for confirmation (if applicable).')
-      setBookingSucceeded(true)
-      setBookedHours(selectedDurationHours)
-      setBookedRoomId(roomId)
-      // Refresh availability after booking
+      setHoldCreated(true)
+      setHoldId(res.holdId)
+      setHoldExpiresAt(res.expiresAt ?? null)
+      setHeldHours(selectedDurationHours)
+      setHeldRoomId(roomId)
+      setSubmitMsg(
+        'Time held. Pay deposit to confirm — your session will not be added to the calendar until deposit is received.',
+      )
+      // Refresh availability after hold (backend should include holds in busy hours)
       const data = await fetchBusyHours(date, roomId)
       setBusyHours(data)
       setSelectedHours([])
     } catch (e) {
       setSubmitMsg(e instanceof Error ? e.message : 'Booking failed')
-      setBookingSucceeded(false)
-      setBookedHours(null)
-      setBookedRoomId(null)
+      setHoldCreated(false)
+      setHoldId(null)
+      setHoldExpiresAt(null)
+      setHeldHours(null)
+      setHeldRoomId(null)
     } finally {
       setSubmitting(false)
     }
@@ -478,9 +489,9 @@ export function Book() {
                 type="button"
                 onClick={onSubmit}
                 disabled={!canSubmit}
-                aria-label="Request booking"
+                aria-label="Hold time and get deposit link"
               >
-                {submitting ? 'Sending…' : 'Request booking'}
+                {submitting ? 'Sending…' : 'Hold time & get deposit link'}
               </Button>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
                 {selectedStartHour == null
@@ -495,17 +506,32 @@ export function Book() {
               </p>
             ) : null}
 
-            {bookingSucceeded ? (
+            {holdCreated ? (
               <div className="mt-4 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/5 dark:shadow-none">
                 <p className="text-sm text-zinc-900 dark:text-zinc-200">
-                  Deposit is {depositPercent}% non-refundable of your session total ({successfulRoom.name}).
+                  Your time is temporarily held for <span className="font-medium">{successfulRoom.name}</span>. Your
+                  session will be added to the calendar after the deposit is received.
                 </p>
                 <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
                   Session total: ${successfulSessionTotalDisplay} · Deposit due: ${successfulDepositDisplay}
                 </p>
-                <div className="mt-3">
+                {holdId ? (
+                  <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-300">
+                    Hold code: <span className="font-mono">{holdId}</span>
+                    {holdExpiresAt ? (
+                      <span>
+                        {' '}
+                        · Expires: <span className="font-mono">{holdExpiresAt}</span>
+                      </span>
+                    ) : null}
+                  </p>
+                ) : null}
+                <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center">
                   <ButtonExternalLink href={cashAppDepositUrl}>
                     Pay ${successfulDepositDisplay} deposit
+                  </ButtonExternalLink>
+                  <ButtonExternalLink href={instagramUrl} variant="secondary">
+                    DM deposit + hold code
                   </ButtonExternalLink>
                 </div>
               </div>

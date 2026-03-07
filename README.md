@@ -85,7 +85,13 @@ Update:
 Your Web App must support:
 
 - `GET ?mode=busy&date=YYYY-MM-DD&room=A|B` → returns `{ ok:true, busyHours:[0..23] }` (busy hours **for that room**)
-- `GET ?mode=book&name=...&phone=...&instagram=...&date=YYYY-MM-DD&room=A|B&startHour=0..23&durationMinutes=...` → creates an event and returns `{ ok:true }`
+- `GET ?mode=hold&name=...&phone=...&instagram=...&date=YYYY-MM-DD&room=A|B&startHour=0..23&durationMinutes=...` → creates a **temporary hold** and returns `{ ok:true, holdId, expiresAt }`
+- `GET ?mode=confirm&holdId=...` → (admin-only) confirms deposit and creates the calendar event for that hold
+
+Notes:
+- **Deposit gating**: the site uses `mode=hold` so clients cannot create calendar events before paying the deposit.
+- **Holds must affect availability**: `mode=busy` should include both confirmed events and non-expired holds for the requested room.
+- **Room separation on ONE calendar**: allow overlaps across rooms by filtering conflicts by room. Recommended: store a stable tag in the event description like `ROOM=A` / `ROOM=B` and set the event title format like `Room A — <Name> (2h)`.
 
 ### 24/7 + rule enforcement
 
