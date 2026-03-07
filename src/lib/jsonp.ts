@@ -21,7 +21,7 @@ export function jsonp<T>(
 
     const t = window.setTimeout(() => {
       cleanup(s)
-      reject(new Error('JSONP timeout'))
+      reject(new Error(`JSONP timeout: ${fullUrl}`))
     }, timeoutMs)
 
     // @ts-expect-error - dynamic callback assignment
@@ -37,7 +37,7 @@ export function jsonp<T>(
     s.onerror = () => {
       window.clearTimeout(t)
       cleanup(s)
-      reject(new Error('JSONP load error'))
+      reject(new Error(`JSONP load error: ${fullUrl}`))
     }
     document.head.appendChild(s)
   })
