@@ -1,7 +1,8 @@
-import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { HashRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { Admin } from './routes/Admin'
+import { AdminApprovals } from './routes/AdminApprovals'
 import { Beats } from './routes/Beats'
 import { Book } from './routes/Book'
 import { Contact } from './routes/Contact'
@@ -12,16 +13,20 @@ import { Policies } from './routes/Policies'
 import { Rates } from './routes/Rates'
 import { Services } from './routes/Services'
 
-export default function App() {
+function AppFrame() {
+  const location = useLocation()
+  const isAdminRoute = location.pathname.startsWith('/admin')
+
   return (
-    <HashRouter>
-      <Header />
-      <main id="main" className="min-h-[calc(100vh-8rem)]">
+    <>
+      {isAdminRoute ? null : <Header />}
+      <main id="main" className={isAdminRoute ? 'min-h-screen' : 'min-h-[calc(100vh-8rem)]'}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/book" element={<Book />} />
           <Route path="/beats" element={<Beats />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/approvals" element={<AdminApprovals />} />
           <Route path="/services" element={<Services />} />
           <Route path="/rates" element={<Rates />} />
           <Route path="/policies" element={<Policies />} />
@@ -31,7 +36,15 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
-      <Footer />
+      {isAdminRoute ? null : <Footer />}
+    </>
+  )
+}
+
+export default function App() {
+  return (
+    <HashRouter>
+      <AppFrame />
     </HashRouter>
   )
 }
