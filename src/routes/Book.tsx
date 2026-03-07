@@ -66,6 +66,7 @@ export function Book() {
   const [selectedHours, setSelectedHours] = useState<number[]>([])
 
   const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [ig, setIg] = useState('')
   const [notes, setNotes] = useState('')
@@ -163,6 +164,7 @@ export function Book() {
 
   const canSubmit =
     name.trim().length > 0 &&
+    email.trim().length > 0 &&
     phone.trim().length > 0 &&
     ig.trim().length > 0 &&
     selectedStartHour != null &&
@@ -204,6 +206,7 @@ export function Book() {
     try {
       const res = await createHold({
         name: name.trim(),
+        email: email.trim(),
         phone: phone.trim(),
         instagram: ig.trim(),
         date,
@@ -217,9 +220,7 @@ export function Book() {
       setHoldExpiresAt(res.expiresAt ?? null)
       setHeldHours(selectedDurationHours)
       setHeldRoomId(roomId)
-      setSubmitMsg(
-        'Time held. Pay deposit to confirm — your session will not be added to the calendar until deposit is received.',
-      )
+      setSubmitMsg('Time held. Pay deposit to confirm — you’ll get an email once approved or denied.')
       // Refresh availability after hold (backend should include holds in busy hours)
       const data = await fetchBusyHours(date, roomId)
       setBusyHours(data)
@@ -431,7 +432,7 @@ export function Book() {
               })}
             </div>
 
-            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               <div>
                 <label className="text-sm text-zinc-700 dark:text-zinc-200" htmlFor="bkName">
                   Name
@@ -442,6 +443,20 @@ export function Book() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   autoComplete="name"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-zinc-700 dark:text-zinc-200" htmlFor="bkEmail">
+                  Email
+                </label>
+                <input
+                  id="bkEmail"
+                  className="mt-2 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-white/10 dark:bg-zinc-950/60 dark:text-white dark:focus-visible:ring-zinc-200 dark:focus-visible:ring-offset-zinc-950"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  inputMode="email"
+                  autoComplete="email"
+                  placeholder="you@example.com"
                 />
               </div>
               <div>

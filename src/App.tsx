@@ -1,6 +1,7 @@
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
+import { Admin } from './routes/Admin'
 import { Beats } from './routes/Beats'
 import { Book } from './routes/Book'
 import { Contact } from './routes/Contact'
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/book" element={<Book />} />
           <Route path="/beats" element={<Beats />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="/services" element={<Services />} />
           <Route path="/rates" element={<Rates />} />
           <Route path="/policies" element={<Policies />} />
