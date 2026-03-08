@@ -79,6 +79,7 @@ If you want a fully custom calendar UI (time-slot grid) without managing CORS, t
 Update:
 
 - `bookingApiUrl` in `src/lib/constants.ts`
+- Or set `VITE_BOOKING_API_URL` at build time (see `ENVIRONMENT.md`)
 
 ### Required Apps Script endpoints
 

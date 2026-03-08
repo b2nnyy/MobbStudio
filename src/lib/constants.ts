@@ -42,7 +42,8 @@ export const minAdvanceHours = 2
 // Booking (Custom calendar + Google Apps Script Web App)
 // This is the Web App "exec" URL from Apps Script deployment.
 export const bookingApiUrl =
-  'https://script.google.com/macros/s/AKfycbzimJZNPIwG3Pa8NvMlSV2wcRvnwrlDRxYks0tP83Wpr2aFYb5QIo_IiBeaHTGtk3AtQw/exec'
+  import.meta.env.VITE_BOOKING_API_URL ??
+  'https://script.google.com/macros/s/AKfycby-n-JeHmJ4742Xpjz0SkBU4cU3G7hUdkWiEl0s1Cy_Z7z8zUZ8OjYvofkZyXtqXKkFCw/exec'
 
 export const cashAppUrl = 'https://cash.app/$Mobbstudios'
 

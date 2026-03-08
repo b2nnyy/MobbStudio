@@ -45,6 +45,19 @@ function daysInMonth(d: Date) {
   return new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate()
 }
 
+function formatAvailabilityError(msg: string) {
+  if (msg.includes('Calendar not found') || msg.includes('CALENDAR_ID')) {
+    return 'Booking system is not configured yet (calendar not found). Please contact the studio while we fix it.'
+  }
+  if (msg.includes('Unknown mode')) {
+    return 'Booking system is not configured yet (missing API endpoints). Please contact the studio while we fix it.'
+  }
+  if (msg.includes('JSONP load error') || msg.includes('JSONP timeout')) {
+    return 'Couldn’t reach the booking system (network/content blocker). Try disabling ad/script blockers or using a different network.'
+  }
+  return msg
+}
+
 export function Book() {
   const location = useLocation()
   const today = useMemo(() => new Date(), [])
@@ -95,7 +108,8 @@ export function Book() {
         if (!cancelled) setBusyHours(data)
       } catch (e) {
         if (!cancelled) {
-          setBusyError(e instanceof Error ? e.message : 'Failed to load availability')
+          const raw = e instanceof Error ? e.message : 'Failed to load availability'
+          setBusyError(formatAvailabilityError(raw))
           setBusyHours([])
         }
       } finally {
