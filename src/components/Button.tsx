@@ -30,10 +30,10 @@ export function LoadingSpark({
 }) {
   return (
     <span className={cx('inline-flex items-center gap-2', className)} aria-hidden={label ? undefined : true}>
-      <span className="inline-flex items-end gap-1 rounded-full border border-white/10 bg-black/10 px-2 py-1 dark:bg-white/5">
-        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-current opacity-70" />
-        <span className="h-2.5 w-1.5 animate-pulse rounded-full bg-current [animation-delay:120ms]" />
-        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-current opacity-70 [animation-delay:240ms]" />
+      <span className="relative inline-flex h-6 w-12 items-center overflow-hidden rounded-full border border-white/10 bg-black/10 px-1 dark:bg-white/5">
+        <span className="absolute left-1 top-1/2 h-4 w-4 -translate-y-1/2 rounded-full bg-current/20 blur-[6px]" />
+        <span className="absolute left-1 top-1/2 h-4 w-4 -translate-y-1/2 animate-[loader-slide_1s_ease-in-out_infinite] rounded-full bg-current shadow-[0_0_12px_currentColor]" />
+        <span className="absolute inset-y-1 left-1/2 w-px -translate-x-1/2 bg-current/10" />
       </span>
       {label ? <span>{label}</span> : null}
     </span>
