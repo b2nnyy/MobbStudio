@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { cancelHold, confirmHold, listHolds, type HoldRecord } from '../lib/bookingApi'
+import { cancelHold, confirmHold, deleteHold, listHolds, type HoldRecord } from '../lib/bookingApi'
 
 function fmtHoldSummary(h: HoldRecord) {
   const hours = Math.round((h.durationMinutes || 0) / 60)
@@ -152,6 +152,16 @@ export function AdminApprovals() {
                   {h.email ? <p>Email: {h.email}</p> : null}
                 </div>
               </div>
+              <div className="flex shrink-0 items-start">
+                <button
+                  type="button"
+                  onClick={() => void onDeleteHistory(h.holdId)}
+                  disabled={actionBusy != null}
+                  className="rounded-lg border border-rose-300/70 bg-white/70 px-4 py-2 text-sm font-medium text-rose-700 shadow-[0_0_18px_rgba(244,63,94,0.14)] hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-rose-400/40 dark:bg-white/5 dark:text-rose-200 dark:hover:bg-rose-500/10"
+                >
+                  {actionBusy === h.holdId ? 'Deleting…' : 'Delete'}
+                </button>
+              </div>
             </div>
           </div>
         ))}
@@ -200,6 +210,22 @@ export function AdminApprovals() {
       await refresh()
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to deny')
+    } finally {
+      setActionBusy(null)
+    }
+  }
+
+  async function onDeleteHistory(holdId: string) {
+    const ok = window.confirm('Delete this history record permanently? This cannot be undone.')
+    if (!ok) return
+
+    setActionBusy(holdId)
+    setError(null)
+    try {
+      await deleteHold(holdId, token)
+      await refresh()
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to delete record')
     } finally {
       setActionBusy(null)
     }

@@ -164,6 +164,14 @@ export async function cancelHold(holdId: string, adminToken: string): Promise<vo
   if (!data.ok) throw new Error(data.error || 'Failed to cancel hold')
 }
 
+export async function deleteHold(holdId: string, adminToken: string): Promise<void> {
+  const url = `${bookingApiUrl}?mode=delete&holdId=${encodeURIComponent(
+    holdId,
+  )}&token=${encodeURIComponent(adminToken)}`
+  const data = await requestApi<SimpleOkResponse>(url)
+  if (!data.ok) throw new Error(data.error || 'Failed to delete hold')
+}
+
 export async function bookSession(input: {
   name: string
   phone: string
