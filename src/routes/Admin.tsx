@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Button } from '../components/Button'
 import { listHolds } from '../lib/bookingApi'
 
 export function Admin() {
@@ -47,14 +48,16 @@ export function Admin() {
           />
         </div>
 
-        <button
+        <Button
           type="button"
           onClick={() => void onLogin()}
-          disabled={loading || token.trim().length === 0}
-          className="mt-4 w-full rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
+          disabled={token.trim().length === 0}
+          loading={loading}
+          loadingLabel="Checking access"
+          className="mt-4 w-full"
         >
-          {loading ? 'Checking…' : 'Log in'}
-        </button>
+          Log in
+        </Button>
 
         {error ? (
           <p className="mt-3 text-sm text-zinc-700 dark:text-zinc-300" role="status">

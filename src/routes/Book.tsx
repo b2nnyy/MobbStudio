@@ -12,7 +12,7 @@ import {
   type StudioRoomId,
 } from '../lib/constants'
 import { createHold, fetchBusyHours } from '../lib/bookingApi'
-import { ButtonExternalLink, ButtonLink, Button } from '../components/Button'
+import { ButtonExternalLink, ButtonLink, Button, LoadingSpark } from '../components/Button'
 import { Card, CardBody } from '../components/Card'
 import { SectionHeader } from '../components/Section'
 
@@ -403,9 +403,9 @@ export function Book() {
                 const isTooSoon = isHourBlockedByAdvanceRule(date, h)
                 const blocked = loadingBusy || busyHours == null || isBusy || isTooSoon
                 const selected = selectedHours.includes(h)
-                const statusLabel = blocked
+                const statusContent = blocked
                   ? loadingBusy || busyHours == null
-                    ? 'Loading…'
+                    ? <LoadingSpark className="gap-1.5" label={<span className="text-[11px]">Loading</span>} />
                     : isBusy
                       ? 'Booked'
                       : isTooSoon
@@ -439,7 +439,7 @@ export function Book() {
                         selected ? 'text-emerald-100/90' : 'text-zinc-500 dark:text-zinc-400',
                       ].join(' ')}
                     >
-                      {statusLabel}
+                      {statusContent}
                     </div>
                   </button>
                 )
@@ -518,9 +518,11 @@ export function Book() {
                 type="button"
                 onClick={onSubmit}
                 disabled={!canSubmit}
+                loading={submitting}
+                loadingLabel="Holding your time"
                 aria-label="Hold time and get deposit link"
               >
-                {submitting ? 'Sending…' : 'Hold time & get deposit link'}
+                Hold time & get deposit link
               </Button>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
                 {selectedStartHour == null

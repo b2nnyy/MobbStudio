@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { LoadingSpark } from '../components/Button'
 import { cancelHold, confirmHold, deleteHold, listHolds, type HoldRecord } from '../lib/bookingApi'
 
 function fmtHoldSummary(h: HoldRecord) {
@@ -107,7 +108,7 @@ export function AdminApprovals() {
                     disabled={actionBusy != null}
                     className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
                   >
-                    {actionBusy === h.holdId ? 'Working…' : 'Accept'}
+                    {actionBusy === h.holdId ? <LoadingSpark label="Accepting" /> : 'Accept'}
                   </button>
                   <button
                     type="button"
@@ -115,7 +116,7 @@ export function AdminApprovals() {
                     disabled={actionBusy != null}
                     className="rounded-lg border border-zinc-200 bg-white px-4 py-2 text-sm hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10"
                   >
-                    {actionBusy === h.holdId ? 'Working…' : 'Deny'}
+                    {actionBusy === h.holdId ? <LoadingSpark label="Denying" /> : 'Deny'}
                   </button>
                 </div>
               </div>
@@ -159,7 +160,7 @@ export function AdminApprovals() {
                   disabled={actionBusy != null}
                   className="rounded-lg border border-rose-300/70 bg-white/70 px-4 py-2 text-sm font-medium text-rose-700 shadow-[0_0_18px_rgba(244,63,94,0.14)] hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-rose-400/40 dark:bg-white/5 dark:text-rose-200 dark:hover:bg-rose-500/10"
                 >
-                  {actionBusy === h.holdId ? 'Deleting…' : 'Delete'}
+                  {actionBusy === h.holdId ? <LoadingSpark label="Deleting" /> : 'Delete'}
                 </button>
               </div>
             </div>
@@ -268,7 +269,7 @@ export function AdminApprovals() {
               disabled={loading}
               className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10"
             >
-              {loading ? 'Refreshing…' : 'Refresh'}
+              {loading ? <LoadingSpark label="Refreshing" /> : 'Refresh'}
             </button>
             <Link
               to="/admin"
