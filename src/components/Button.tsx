@@ -30,10 +30,17 @@ export function LoadingSpark({
 }) {
   return (
     <span className={cx('inline-flex items-center gap-2', className)} aria-hidden={label ? undefined : true}>
-      <span className="relative inline-flex h-6 w-12 items-center overflow-hidden rounded-full border border-white/10 bg-black/10 px-1 dark:bg-white/5">
-        <span className="absolute left-1 top-1/2 h-4 w-4 -translate-y-1/2 rounded-full bg-current/20 blur-[6px]" />
-        <span className="absolute left-1 top-1/2 h-4 w-4 -translate-y-1/2 animate-[loader-slide_1s_ease-in-out_infinite] rounded-full bg-current shadow-[0_0_12px_currentColor]" />
-        <span className="absolute inset-y-1 left-1/2 w-px -translate-x-1/2 bg-current/10" />
+      <span className="inline-flex h-5 w-5 shrink-0 animate-spin items-center justify-center">
+        <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+          <circle cx="12" cy="3.5" r="1.8" fill="currentColor" opacity="1" />
+          <circle cx="17.66" cy="5.84" r="1.8" fill="currentColor" opacity="0.88" />
+          <circle cx="20" cy="11.5" r="1.8" fill="currentColor" opacity="0.76" />
+          <circle cx="17.66" cy="17.16" r="1.8" fill="currentColor" opacity="0.64" />
+          <circle cx="12" cy="19.5" r="1.8" fill="currentColor" opacity="0.52" />
+          <circle cx="6.34" cy="17.16" r="1.8" fill="currentColor" opacity="0.4" />
+          <circle cx="4" cy="11.5" r="1.8" fill="currentColor" opacity="0.28" />
+          <circle cx="6.34" cy="5.84" r="1.8" fill="currentColor" opacity="0.16" />
+        </svg>
       </span>
       {label ? <span>{label}</span> : null}
     </span>
