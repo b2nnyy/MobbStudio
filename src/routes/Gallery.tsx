@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ButtonLink } from '../components/Button'
 import { Card, CardBody } from '../components/Card'
 import { SectionHeader } from '../components/Section'
 
@@ -178,6 +179,11 @@ export function Gallery() {
             <p className="mt-4 text-center text-sm text-zinc-600 dark:text-zinc-300">
               {roomLabel} - Photo {activeIndex + 1} of {photos.length}
             </p>
+            <div className="mt-5 flex justify-center">
+              <ButtonLink to={`/book?room=${activeRoom}`}>
+                {activeRoom === 'A' ? 'Book A Room' : 'Book B Room session'}
+              </ButtonLink>
+            </div>
           </CardBody>
         </Card>
       </div>
