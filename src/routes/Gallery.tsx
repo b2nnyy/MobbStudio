@@ -137,7 +137,7 @@ export function Gallery() {
         <Card className="mx-auto w-full max-w-5xl">
           <CardBody>
             <div
-              className="relative"
+              className="relative select-none caret-transparent"
               tabIndex={0}
               onKeyDown={handleViewerKeyDown}
               onTouchStart={handleTouchStart}

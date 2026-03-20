@@ -49,6 +49,21 @@
   html.dark ::selection {
     @apply bg-zinc-200 text-zinc-900;
   }
+
+  button,
+  a,
+  [role='button'],
+  [role='tab'],
+  [role='option'] {
+    caret-color: transparent;
+  }
+
+  button,
+  [role='button'],
+  [role='tab'],
+  [role='option'] {
+    user-select: none;
+  }
 }
 
 @layer utilities {
