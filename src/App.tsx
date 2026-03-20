@@ -6,6 +6,7 @@ import { AdminApprovals } from './routes/AdminApprovals'
 import { Beats } from './routes/Beats'
 import { Book } from './routes/Book'
 import { Contact } from './routes/Contact'
+import { Gallery } from './routes/Gallery'
 import { Gear } from './routes/Gear'
 import { Home } from './routes/Home'
 import { Location } from './routes/Location'
@@ -29,6 +30,7 @@ function AppFrame() {
           <Route path="/admin/approvals" element={<AdminApprovals />} />
           <Route path="/services" element={<Services />} />
           <Route path="/rates" element={<Rates />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/policies" element={<Policies />} />
           <Route path="/gear" element={<Gear />} />
           <Route path="/location" element={<Location />} />
