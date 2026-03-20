@@ -14,6 +14,7 @@ import {
 import { createHold, fetchBusyHours } from '../lib/bookingApi'
 import { ButtonExternalLink, ButtonLink, Button, LoadingSpark } from '../components/Button'
 import { Card, CardBody } from '../components/Card'
+import { SelectMenu } from '../components/SelectMenu'
 import { SectionHeader } from '../components/Section'
 
 function pad2(n: number) {
@@ -372,22 +373,19 @@ export function Book() {
                   </Link>
                 </p>
               </div>
-              <div className="flex flex-col gap-1">
+              <div className="flex w-full flex-col gap-1 sm:w-auto sm:flex-none">
                 <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300" htmlFor="bkRoom">
                   Room
                 </label>
-                <select
+                <SelectMenu
                   id="bkRoom"
                   value={roomId}
-                  onChange={(e) => setRoomId(e.target.value as StudioRoomId)}
-                  className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-white/10 dark:bg-zinc-950/60 dark:text-white dark:focus-visible:ring-zinc-200 dark:focus-visible:ring-offset-zinc-950"
-                >
-                  {rooms.map((r) => (
-                    <option key={r.id} value={r.id}>
-                      {r.name} · ${r.hourlyRate}/hr
-                    </option>
-                  ))}
-                </select>
+                  onChange={(nextValue) => setRoomId(nextValue as StudioRoomId)}
+                  options={rooms.map((r) => ({
+                    value: r.id,
+                    label: `${r.name} · $${r.hourlyRate}/hr`,
+                  }))}
+                />
               </div>
             </div>
 
