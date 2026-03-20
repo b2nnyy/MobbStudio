@@ -50,12 +50,19 @@
     @apply bg-zinc-200 text-zinc-900;
   }
 
-  button,
-  a,
-  [role='button'],
-  [role='tab'],
-  [role='option'] {
+  /*
+    Hide text-caret on non-editable UI so clicks never look like text editing.
+    Re-enable caret only for actual form inputs below.
+  */
+  :where(*):not(input):not(textarea):not(select):not([contenteditable='true']) {
     caret-color: transparent;
+  }
+
+  input,
+  textarea,
+  select,
+  [contenteditable='true'] {
+    caret-color: auto;
   }
 
   button,
